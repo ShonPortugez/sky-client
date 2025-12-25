@@ -423,6 +423,27 @@ export const inputsCustomizations: Components<Theme> = {
             },
         },
     },
+    MuiInputLabel: {
+        styleOverrides: {
+            root: ({ theme }) => ({
+                // Position at the vertical center
+                top: '50%',
+                left: 0,
+                // Default transition for the "shrink" animation
+                transition: theme.transitions.create(['filter', 'transform', 'top'], {
+                    duration: theme.transitions.duration.shorter,
+                }),
+                // Center vertically, offset by your root padding (12px)
+                transform: 'translate(12px, -50%) scale(1)',
+
+                '&.MuiInputLabel-shrink': {
+                    // Move to top when focused/filled
+                    top: 0,
+                    transform: 'translate(12px, -7px) scale(0.75)',
+                },
+            }),
+        },
+    },
     MuiInputAdornment: {
         styleOverrides: {
             root: ({ theme }) => ({
