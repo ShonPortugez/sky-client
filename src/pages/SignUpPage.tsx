@@ -1,6 +1,6 @@
 import {Button, Stack, Typography} from "@mui/material";
 import Box from "@mui/material/Box";
-import RegisterForm from "../components/auth/RegisterForm.tsx";
+import SignUpForm from "../components/auth/SignUpForm.tsx";
 import {useNavigate} from "react-router-dom";
 import BrandedHeader from "../components/common/BrandedHeader.tsx";
 
@@ -76,7 +76,7 @@ const SignUpPage = () => {
                 }}
             >
                 <Typography variant={'h3'} fontSize={'xx-large'} fontWeight={'450'}>Sign up</Typography>
-                <RegisterForm />
+                <SignUpForm />
             </Stack>
         </Box>
     );

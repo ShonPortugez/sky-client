@@ -5,7 +5,13 @@ export const signUpSchema  = z.object({
     email: z.email().min(2, { message: 'Required'}),
     password: z.string().min(2, { message: 'Required'}),
     repeatPassword: z.string().min(2, { message: 'Required'}),
-})
+}).refine(
+    (data) => data.password === data.repeatPassword,
+    {
+        message: 'Passwords do not match',
+        path: ['repeatPassword'],
+    }
+);
 
 export const signInSchema = z.object({
     email: z.email().min(2, { message: 'Required'}),
