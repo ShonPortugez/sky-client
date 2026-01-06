@@ -6,7 +6,7 @@ import {useNavigate} from "react-router-dom";
 import {apiRequests} from "../../lib/api.ts";
 import {toast} from "sonner";
 import type {UserSignupData} from "../../types/user.types.ts";
-import {AuthFormLayout} from "./AuthFormLayout.tsx";
+import {GenericFormLayout} from "../common/GenericFormLayout.tsx";
 
 const SignUpForm = () => {
 
@@ -45,7 +45,7 @@ const SignUpForm = () => {
 
     return (
         <Box sx={{ width: '100%' }}>
-            <AuthFormLayout
+            <GenericFormLayout
                 title={'Sign in'}
                 fields={signInFields}
                 initialValues={{

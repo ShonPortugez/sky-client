@@ -7,3 +7,9 @@ export interface SurveyPreview {
     createdAt: string;
     updatedAt: string;
 }
+
+export interface CreateSurveyData {
+    title: string;
+    description: string;
+    isActive: boolean
+}

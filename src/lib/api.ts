@@ -28,6 +28,10 @@ export const apiRequests = {
         async getSurveys() {
             const response = await api.get('/surveys/');
             return response.data;
+        },
+        async createNewSurvey() {
+            const response = await api.post('/surveys/');
+            return response.data;
         }
     }
 };

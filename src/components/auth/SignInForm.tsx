@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { apiRequests } from "../../lib/api.ts";
 import { useNavigate } from "react-router-dom";
-import {AuthFormLayout} from "./AuthFormLayout.tsx";
+import {GenericFormLayout} from "../common/GenericFormLayout.tsx";
 import Box from "@mui/material/Box";
 
 const SignInForm = () => {
@@ -42,7 +42,7 @@ const SignInForm = () => {
 
     return (
         <Box sx={{ width: '100%' }}>
-            <AuthFormLayout
+            <GenericFormLayout
                 title={'Sign in'}
                 fields={signInFields}
                 initialValues={{
