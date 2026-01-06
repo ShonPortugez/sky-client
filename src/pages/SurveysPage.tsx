@@ -5,7 +5,7 @@ import CreateSurveyDialogForm from "../components/survey/create/CreateSurveyDial
 
 
 
-const HomePage = () => {
+const SurveysPage = () => {
     return (
         <Box sx={{ display: 'flex', justifyContent: 'center',}}>
             <Stack spacing={2} sx={{
@@ -16,7 +16,7 @@ const HomePage = () => {
             }}>
                 <Stack direction={'row'} sx={{justifyContent: 'space-between', alignItems: 'center'}}>
                     <Stack>
-                        <Typography variant={'h5'}>Recent Forms</Typography>
+                        <Typography variant={'h5'}>Recent Surveys</Typography>
                         <Typography variant={'subtitle1'} color={'textDisabled'}>View the surveys you can answer all in one place!</Typography>
                     </Stack>
                     <CreateSurveyDialogForm />
@@ -27,4 +27,4 @@ const HomePage = () => {
     );
 };
 
-export default HomePage;
+export default SurveysPage;

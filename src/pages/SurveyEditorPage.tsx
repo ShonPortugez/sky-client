@@ -1,9 +1,30 @@
-import Box from "@mui/material/Box";
-import {Stack, Typography} from "@mui/material";
+import { Box, CircularProgress, Stack, Typography } from "@mui/material";
+import { useParams } from "react-router-dom";
+import { useSurveyById } from "../hooks/useSurvey.ts";
+import QuestionList from "../components/editor/QuestionList.tsx";
 
 const SurveyEditorPage = () => {
+    const { id } = useParams<{ id: string }>();
+    const { survey, isLoading, isError } = useSurveyById(id || '');
+
+    if (isLoading) {
+        return (
+            <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
+                <CircularProgress />
+            </Box>
+        );
+    }
+
+    if (isError || !survey) {
+        return (
+            <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
+                <Typography color="error">Failed to load survey</Typography>
+            </Box>
+        );
+    }
+
     return (
-        <Box sx={{ display: 'flex', justifyContent: 'center',}}>
+        <Box sx={{ display: 'flex', justifyContent: 'center', }}>
             <Stack spacing={2} sx={{
                 width: '70%',
                 position: 'relative',
@@ -11,9 +32,10 @@ const SurveyEditorPage = () => {
                 padding: '2rem',
             }}>
                 <Stack>
-                    <Typography variant={'h5'}>Create a new survey</Typography>
-                    <Typography variant={'body1'} color={'textSecondary'}>Enter the details of your survey and you can start adding questions next!</Typography>
+                    <Typography variant={'h5'}>{survey.title}</Typography>
+                    <Typography variant={'body1'} color={'textSecondary'}>{survey.description}</Typography>
                 </Stack>
+                <QuestionList />
             </Stack>
         </Box>
     );

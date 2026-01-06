@@ -29,6 +29,10 @@ export const apiRequests = {
             const response = await api.get('/surveys/');
             return response.data;
         },
+        async getSurvey(id: string) {
+            const response = await api.get(`/surveys/${id}`);
+            return response.data;
+        },
         async createNewSurvey() {
             const response = await api.post('/surveys/');
             return response.data;
