@@ -1,31 +1,24 @@
-import {Button, Card, Chip, Divider, lighten, Stack, Tooltip, Typography} from "@mui/material";
-import AssignmentOutlinedIcon from '@mui/icons-material/AssignmentOutlined';
-import Box from "@mui/material/Box";
+import { Button, Card, Chip, Divider, Stack, Tooltip, Typography } from "@mui/material";
 import ContentCopyOutlinedIcon from '@mui/icons-material/ContentCopyOutlined';
 import IconButton from "@mui/material/IconButton";
+import type { SurveyPreview } from "../../types/survey.types.ts";
+import SurveyIcon from "./SurveyIcon.tsx";
 
-const SurveyIcon = () => {
-    return (
-        <Box
-            sx={(theme) => ({
-                display: 'flex',
-                backgroundColor: lighten(theme.palette.primary.light, 0.7),
-                borderRadius: 1,
-                alignItems: 'center',
-            })}>
-            <AssignmentOutlinedIcon sx={(theme) => ({
-                color: lighten(theme.palette.primary.main, 0.1),
-                margin: theme.spacing(1),
-            })}/>
-        </Box>
-    );
-};
+interface SurveyCardProps {
+    survey: SurveyPreview;
+}
 
-const SurveyActions = () => {
+const SurveyActions = ({survey}: SurveyCardProps) => {
+
+    const onCopyClick = async () => {
+        const link: string = `${import.meta.env.VITE_WEBSITE_URL}/surveys/${survey.id}`;
+        await navigator.clipboard.writeText(link)
+    }
+
     return (
-        <Stack direction={'row'} spacing={1} sx={{ alignItems: 'center'}}>
+        <Stack direction={'row'} spacing={1} sx={{ alignItems: 'center' }}>
             <Tooltip title={'Copy survey link'}>
-                <IconButton color={'secondary'} size={'small'}>
+                <IconButton color={'secondary'} size={'small'} onClick={onCopyClick}>
                     <ContentCopyOutlinedIcon />
                 </IconButton>
             </Tooltip>
@@ -36,29 +29,35 @@ const SurveyActions = () => {
     )
 }
 
-const SurveyCard = () => {
+const SurveyCard = ({ survey }: SurveyCardProps) => {
     return (
         <Card>
             <Stack direction="column" spacing={2}>
-                <Stack direction="row" sx={{ justifyContent: 'space-between', alignItems: 'center'}}>
+                <Stack direction="row" sx={{ justifyContent: 'space-between', alignItems: 'center' }}>
                     <Stack direction="row" spacing={2}>
                         <SurveyIcon />
                         <Stack direction="column">
-                            <Typography>Title</Typography>
-                            <Typography>Created Date</Typography>
+                            <Typography>{survey.title}</Typography>
+                            <Typography variant="caption" color="text.secondary">
+                                {new Date(survey.createdAt).toLocaleDateString()}
+                            </Typography>
                         </Stack>
                     </Stack>
-                    <Chip label={'Active'} color={'success'} sx={{padding: 1.5}}/>
+                    <Chip
+                        label={survey.isActive ? 'Active' : 'Inactive'}
+                        color={survey.isActive ? 'success' : 'warning'}
+                        sx={{ padding: 1.5 }}
+                    />
                 </Stack>
-                <Stack direction="row" sx={{ justifyContent: 'space-between', alignItems: 'center'}}>
+                <Stack direction="row" sx={{ justifyContent: 'space-between', alignItems: 'center' }}>
                     <Stack direction="row" spacing={1}>
                         <Typography>0 Responses</Typography>
                         <Divider orientation="vertical" flexItem sx={(theme) => ({
                             backgroundColor: theme.palette.divider
-                        })}/>
+                        })} />
                         <Typography>0 Questions</Typography>
                     </Stack>
-                    <SurveyActions />
+                    <SurveyActions survey={survey}/>
                 </Stack>
             </Stack>
         </Card>
