@@ -6,6 +6,7 @@ import { apiRequests } from "../../lib/api.ts";
 import { useNavigate } from "react-router-dom";
 import {GenericFormLayout} from "../common/GenericFormLayout.tsx";
 import Box from "@mui/material/Box";
+import {ROUTES} from "../../routes/paths.ts";
 
 const SignInForm = () => {
     const navigate = useNavigate();
@@ -26,7 +27,7 @@ const SignInForm = () => {
             }
 
             toast.success("Login successful");
-            navigate('/home');
+            navigate(`/${ROUTES.SURVEYS}`);
         } catch (err) {
             const message = err instanceof Error ? err.message : "An unexpected error occurred";
             console.error(err);

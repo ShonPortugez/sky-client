@@ -1,65 +1,76 @@
-import { useState } from 'react';
-import {Card, FormControlLabel, Stack, Switch, Tooltip} from "@mui/material";
-import Select from "@mui/material/Select";
+import { Card, Divider, FormControlLabel, Stack, Switch } from "@mui/material";
+import Select, { type SelectChangeEvent } from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
-import TextQuestion from "./questions/TextQuestion.tsx";
-import SliderQuestion from "./questions/SliderQuestion.tsx";
-import DateQuestion from "./questions/DateQuestion.tsx";
-import MultipleChoiceQuestion from "./questions/MultipleChoiceQuestion.tsx";
-import ImageQuestion from "./questions/ImageQuestion.tsx";
-import RateQuestion from "./questions/RateQuestion.tsx";
-import IconButton from "@mui/material/IconButton";
-import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
-import CheckboxQuestion from "./questions/CheckboxQuestion.tsx";
+import Box from "@mui/material/Box";
+import type { Question, QuestionType } from "../../types/survey.types.ts";
+import DeleteIconButton from "../common/DeleteIconButton.tsx";
+import {questionTypes} from "./questions/QuestionSelector.tsx";
 
-const questions = [
-    { label: 'Text', component: <TextQuestion /> },
-    { label: 'Slider', component: <SliderQuestion /> },
-    { label: 'Rate', component: <RateQuestion /> },
-    { label: 'Multi answer', component: <MultipleChoiceQuestion /> },
-    { label: 'Date', component: <DateQuestion /> },
-    { label: 'Image', component: <ImageQuestion /> },
-    { label: 'Checkbox', component: <CheckboxQuestion /> },
-]
+interface QuestionCardProps {
+    question: Question;
+    onDelete: (id: string) => void;
+    onUpdate: (id: string, updates: Partial<Question>) => void;
+}
 
-const QuestionGeneralActions = () => {
+const QuestionGeneralActions = ({
+    isRequired,
+    onToggleRequired,
+    onDelete
+}: {
+    isRequired: boolean;
+    onToggleRequired: () => void;
+    onDelete: () => void;
+}) => {
     return (
         <Stack direction="row" spacing={2}>
-            <FormControlLabel control={<Switch />} label="Required" labelPlacement={'start'} />
-            <Tooltip title={'Delete question'}>
-                <IconButton
-                    size="small"
-                    sx={{
-                        '&:hover': {
-                            color: 'error.main',
-                        },
-                    }}>
-                    <DeleteOutlineOutlinedIcon />
-                </IconButton>
-            </Tooltip>
+            <FormControlLabel
+                control={<Switch checked={isRequired} onChange={onToggleRequired} />}
+                label="Required"
+                labelPlacement={'start'}
+            />
+            <DeleteIconButton tooltipText={'Delete question'} onClick={onDelete} />
         </Stack>
     );
 };
 
-const QuestionCard = () => {
-    const [questionType, setQuestionType] = useState(questions[0].label);
+const QuestionCard = ({ question, onDelete, onUpdate }: QuestionCardProps) => {
+    const handleTypeChange = (e: SelectChangeEvent) => {
+        onUpdate(question.id, { type: e.target.value as QuestionType });
+    };
+
+    const Component = questionTypes.find(q => q.type === question.type)?.component;
 
     return (
         <Card>
-            <Stack spacing={2} direction={'row'} sx={{ justifyContent: 'space-between' }}>
+            <Stack spacing={2} direction={'row'} sx={{ justifyContent: 'space-between', alignItems: 'center', p: 2 }}>
                 <Select
                     label="Question"
-                    value={questionType}
-                    onChange={(e) => setQuestionType(e.target.value)}>
-                    {questions.map((item) => (
-                        <MenuItem key={item.label} value={item.label}>
-                            {item.label}
+                    value={question.type}
+                    onChange={handleTypeChange}
+                    size="small"
+                    sx={{ minWidth: 200 }}
+                >
+                    {questionTypes.map((item) => (
+                        <MenuItem key={item.type} value={item.type}>
+                            <Stack spacing={1} direction={'row'} sx={{ alignItems: 'center' }}>
+                                <Box sx={{ color: 'primary.main', display: 'flex' }}>{item.icon}</Box>
+                                <Box>{item.label}</Box>
+                            </Stack>
                         </MenuItem>
                     ))}
                 </Select>
-                <QuestionGeneralActions />
+                <Stack direction="row" spacing={2} alignItems="center">
+                    <QuestionGeneralActions
+                        isRequired={question.isRequired}
+                        onToggleRequired={() => onUpdate(question.id, { isRequired: !question.isRequired })}
+                        onDelete={() => onDelete(question.id)}
+                    />
+                </Stack>
             </Stack>
-            {questions.find(q => q.label === questionType)?.component}
+            <Divider />
+            <Box sx={{ padding: 3 }}>
+                {Component && <Component question={question} onUpdate={onUpdate} />}
+            </Box>
         </Card>
     );
 };

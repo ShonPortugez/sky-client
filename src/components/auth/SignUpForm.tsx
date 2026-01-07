@@ -7,6 +7,7 @@ import {apiRequests} from "../../lib/api.ts";
 import {toast} from "sonner";
 import type {UserSignupData} from "../../types/user.types.ts";
 import {GenericFormLayout} from "../common/GenericFormLayout.tsx";
+import {ROUTES} from "../../routes/paths.ts";
 
 const SignUpForm = () => {
 
@@ -28,7 +29,7 @@ const SignUpForm = () => {
             }
 
             toast.success("Signup Successful");
-            navigate('/home');
+            navigate(`/${ROUTES.SURVEYS}`);
         } catch (err) {
             const message = err instanceof Error ? err.message : "An unexpected error occurred";
             console.error(err);
