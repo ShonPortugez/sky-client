@@ -1,3 +1,5 @@
+import type { BaseQuestionSpec } from "./question.types.ts";
+
 export interface SurveyPreview {
     id: string;
     title: string;
@@ -14,15 +16,6 @@ export interface CreateSurveyData {
     isActive: boolean
 }
 
-export type QuestionType = 'Text' | 'Date' | 'Multi answer' | 'Slider' | 'Rate' | 'Image' | 'Checkbox';
-
-export interface Question {
-    id: string;
-    type: QuestionType;
-    isRequired: boolean;
-    min?: number;
-    max?: number;
-    text?: string;
-    description?: string;
-    options?: string[];
+export interface Survey extends SurveyPreview {
+    questions?: BaseQuestionSpec[];
 }

@@ -1,33 +1,65 @@
-import { Stack, TextField } from "@mui/material";
-import type { Question } from "../../../types/survey.types.ts";
-import QuestionHeader from "./QuestionHeader.tsx";
+import { Stack } from "@mui/material";
+import BaseQuestion from "./BaseQuestion.tsx";
+import { useFormContext } from "react-hook-form";
+import { z } from "zod";
+import ControlledTextField from "../../common/ControlledTextField.tsx";
 
 interface SliderQuestionProps {
-    question: Question;
-    onUpdate: (id: string, updates: Partial<Question>) => void;
+    namePrefix: string;
 }
 
-const SliderQuestion = ({ question, onUpdate }: SliderQuestionProps) => {
+const sliderSchema = z.object({
+    minValue: z.coerce.number().min(0, "Min cannot be negative"),
+    maxValue: z.coerce.number().min(0, "Max cannot be negative"),
+}).refine((data) => data.maxValue > data.minValue,
+    {
+        message: "Max value must be greater than min value",
+        path: ["maxValue"],
+    });
+
+const SliderQuestion = ({ namePrefix }: SliderQuestionProps) => {
+    const { trigger, getValues } = useFormContext();
+
+    const validateRange = () => {
+        const values = {
+            minValue: getValues(`${namePrefix}.minValue`),
+            maxValue: getValues(`${namePrefix}.maxValue`)
+        };
+        const result = sliderSchema.safeParse(values);
+        return result.success || result.error?.issues.find(i => i.path.includes('maxValue'))?.message || true;
+    };
+
     return (
         <Stack spacing={2}>
-            <QuestionHeader question={question} onUpdate={onUpdate} />
-
+            <BaseQuestion namePrefix={namePrefix} />
             <Stack direction={'row'} spacing={2}>
-                <TextField
-                    label="Min Value"
-                    type="number"
+                <ControlledTextField
+                    name={`${namePrefix}.minValue`}
+                    label="Minimum value"
                     variant="outlined"
+                    type="number"
                     fullWidth
-                    value={question.min ?? 0}
-                    onChange={(e) => onUpdate(question.id, { min: Number(e.target.value) })}
+                    rules={{
+                        required: "Required",
+                        validate: (value) => {
+                            const result = sliderSchema.pick({ minValue: true }).safeParse({ minValue: value });
+                            return result.success || result.error.issues[0].message;
+                        }
+                    }}
+                    onChange={() => {
+                        trigger(`${namePrefix}.maxValue`);
+                    }}
                 />
-                <TextField
-                    label="Max Value"
-                    type="number"
+                <ControlledTextField
+                    name={`${namePrefix}.maxValue`}
+                    label="Maximum value"
                     variant="outlined"
+                    type="number"
                     fullWidth
-                    value={question.max ?? 10}
-                    onChange={(e) => onUpdate(question.id, { max: Number(e.target.value) })}
+                    rules={{
+                        required: "Required",
+                        validate: validateRange
+                    }}
                 />
             </Stack>
         </Stack>

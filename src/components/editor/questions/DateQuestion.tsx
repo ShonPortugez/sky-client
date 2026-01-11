@@ -1,16 +1,14 @@
 import { Stack } from "@mui/material";
-import type { Question } from "../../../types/survey.types.ts";
-import QuestionHeader from "./QuestionHeader.tsx";
+import BaseQuestion from "./BaseQuestion.tsx";
 
 interface DateQuestionProps {
-    question: Question;
-    onUpdate: (id: string, updates: Partial<Question>) => void;
+    namePrefix: string;
 }
 
-const DateQuestion = ({ question, onUpdate }: DateQuestionProps) => {
+const DateQuestion = ({ namePrefix }: DateQuestionProps) => {
     return (
         <Stack spacing={2}>
-            <QuestionHeader question={question} onUpdate={onUpdate} />
+            <BaseQuestion namePrefix={namePrefix} />
         </Stack>
     );
 };

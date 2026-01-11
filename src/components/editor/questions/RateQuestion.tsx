@@ -1,25 +1,25 @@
-import { Stack, TextField } from "@mui/material";
-import type { Question } from "../../../types/survey.types.ts";
-import QuestionHeader from "./QuestionHeader.tsx";
+import { Stack } from "@mui/material";
+import BaseQuestion from "./BaseQuestion.tsx";
+import ControlledTextField from "../../common/ControlledTextField.tsx";
 
 interface RateQuestionProps {
-    question: Question;
-    onUpdate: (id: string, updates: Partial<Question>) => void;
+    namePrefix: string;
 }
 
-const RateQuestion = ({ question, onUpdate }: RateQuestionProps) => {
+const RateQuestion = ({ namePrefix }: RateQuestionProps) => {
     return (
         <Stack spacing={2}>
-            <QuestionHeader question={question} onUpdate={onUpdate} />
+            <BaseQuestion namePrefix={namePrefix} />
 
             <Stack direction="row" alignItems="center" spacing={2}>
-                <TextField
+                <ControlledTextField
+                    name={`${namePrefix}.maxValue`}
                     label="Max Stars"
                     type="number"
                     variant="outlined"
                     sx={{ width: 150 }}
-                    value={question.max || 5}
-                    onChange={(e) => onUpdate(question.id, { max: Number(e.target.value) })}
+                    value={5}
+                    rules={{ min: { value: 1, message: "Must be at least 1" } }}
                 />
             </Stack>
         </Stack>

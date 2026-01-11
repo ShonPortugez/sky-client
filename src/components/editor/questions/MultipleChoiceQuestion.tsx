@@ -1,36 +1,44 @@
 import { Button, Stack, TextField } from "@mui/material";
 import AddIcon from '@mui/icons-material/Add';
-import type { Question } from "../../../types/survey.types.ts";
-import QuestionHeader from "./QuestionHeader.tsx";
+import BaseQuestion from "./BaseQuestion.tsx";
 import DeleteIconButton from "../../common/DeleteIconButton.tsx";
+import { useFormContext, useWatch } from "react-hook-form";
 
 interface MultipleChoiceQuestionProps {
-    question: Question;
-    onUpdate: (id: string, updates: Partial<Question>) => void;
+    namePrefix: string;
 }
 
-const MultipleChoiceQuestion = ({ question, onUpdate }: MultipleChoiceQuestionProps) => {
-    const options = question.options || [];
+const MultipleChoiceQuestion = ({ namePrefix }: MultipleChoiceQuestionProps) => {
+    const { control, setValue, getValues } = useFormContext();
+    const optionsPath = `${namePrefix}.options`;
+
+    const options: string[] = useWatch({
+        control,
+        name: optionsPath
+    }) || [];
 
     const handleAddOption = () => {
-        const newOptions = [...options, `Option ${options.length + 1}`];
-        onUpdate(question.id, { options: newOptions });
+        const currentOptions = getValues(optionsPath) || [];
+        const newOptions = [...currentOptions, `Option ${currentOptions.length + 1}`];
+        setValue(optionsPath, newOptions);
     };
 
     const handleUpdateOption = (index: number, value: string) => {
-        const newOptions = [...options];
+        const currentOptions = getValues(optionsPath) || [];
+        const newOptions = [...currentOptions];
         newOptions[index] = value;
-        onUpdate(question.id, { options: newOptions });
+        setValue(optionsPath, newOptions);
     };
 
     const handleDeleteOption = (index: number) => {
-        const newOptions = options.filter((_, i) => i !== index);
-        onUpdate(question.id, { options: newOptions });
+        const currentOptions = getValues(optionsPath) || [];
+        const newOptions = currentOptions.filter((_val: string, i: number) => i !== index);
+        setValue(optionsPath, newOptions);
     };
 
     return (
         <Stack spacing={2}>
-            <QuestionHeader question={question} onUpdate={onUpdate} />
+            <BaseQuestion namePrefix={namePrefix} />
 
             <Stack spacing={1}>
                 {options.map((option, index) => (
