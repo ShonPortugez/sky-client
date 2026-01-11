@@ -1,28 +1,30 @@
 import React from 'react';
-import {Button, Dialog, DialogContent, DialogTitle, Typography} from "@mui/material";
+import { Button, Dialog, DialogContent, DialogTitle, Typography } from "@mui/material";
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
-import {useForm} from "react-hook-form";
-import {createSurveySchema, type CreateSurveySchema} from "./createSurvey.schema.ts";
-import {zodResolver} from "@hookform/resolvers/zod";
-import {toast} from "sonner";
-import {GenericFormLayout} from "../../common/GenericFormLayout.tsx";
-import type {CreateSurveyData} from "../../../types/survey.types.ts";
+import { type CreateSurveySchema } from "./createSurvey.schema.ts";
+import { toast } from "sonner";
+import { GenericFormLayout } from "../../common/GenericFormLayout.tsx";
+import type { CreateSurveyData } from "../../../types/survey.types.ts";
+import { apiRequests } from "../../../lib/api.ts";
 import Box from "@mui/material/Box";
 
 
-const SurveyForm = () => {
+const SurveyForm = ({ onSuccess }: { onSuccess: () => void }) => {
 
-    const {} = useForm<CreateSurveySchema>({
-        mode: 'all',
-        resolver: zodResolver(createSurveySchema)
-    });
 
     const onSubmit = async (data: CreateSurveySchema) => {
         const dto: CreateSurveyData = {
             ...data,
             isActive: true,
         };
-        toast(JSON.stringify(dto));
+        try {
+            await apiRequests.surveys.createNewSurvey(dto);
+            toast.success('Survey created successfully');
+            onSuccess();
+        } catch (error) {
+            console.error(error);
+            toast.error('Failed to create survey');
+        }
     }
 
     const createSurveyFields = [
@@ -63,7 +65,7 @@ const CreateSurveyDialogForm = () => {
                     <Typography color={'textSecondary'}>Enter the following details to start crafting your next survey!</Typography>
                 </DialogTitle>
                 <DialogContent>
-                    <SurveyForm />
+                    <SurveyForm onSuccess={handleClose} />
                 </DialogContent>
             </Dialog>
         </>

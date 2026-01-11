@@ -1,6 +1,7 @@
 import axios from 'axios';
 import type { UserAuthRequest } from "../types/auth.types.ts";
 import type { UserSignupData } from "../types/user.types.ts";
+import type { CreateSurveyData } from "../types/survey.types.ts";
 import { StatusCodes } from "http-status-codes";
 
 const apiUrl: string = import.meta.env.VITE_API_URL || 'http://localhost:8080';
@@ -33,8 +34,8 @@ export const apiRequests = {
             const response = await api.get(`/surveys/${id}`);
             return response.data;
         },
-        async createNewSurvey() {
-            const response = await api.post('/surveys/');
+        async createNewSurvey(data: CreateSurveyData) {
+            const response = await api.post('/surveys/', data);
             return response.data;
         }
     }
