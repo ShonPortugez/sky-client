@@ -3,26 +3,26 @@ import { z } from "zod";
 import ControlledTextField from "../../common/ControlledTextField.tsx";
 
 interface QuestionHeaderProps {
-    namePrefix: string;
+    questionIdPrefix: string;
 }
 
-export const baseSchema = z.string().min(5, "Label must be at least 5 characters");
+export const baseValidationSchema = z.string().min(5, "Label must be at least 5 characters");
 
-const BaseQuestion = ({ namePrefix }: QuestionHeaderProps) => {
+const BaseQuestion = ({ questionIdPrefix }: QuestionHeaderProps) => {
 
     return (
         <Stack spacing={2}>
             <ControlledTextField
-                name={`${namePrefix}.label`}
+                name={`${questionIdPrefix}.label`}
                 label="Question Text"
                 variant="outlined"
                 fullWidth
                 rules={{
-                    validate: (value) => baseSchema.safeParse(value).success || baseSchema.safeParse(value).error?.issues[0].message
+                    validate: (value) => baseValidationSchema.safeParse(value).success || baseValidationSchema.safeParse(value).error?.issues[0].message
                 }}
             />
             <ControlledTextField
-                name={`${namePrefix}.description`}
+                name={`${questionIdPrefix}.description`}
                 label="Description"
                 variant="outlined"
                 fullWidth

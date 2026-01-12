@@ -2,13 +2,13 @@ import { Stack } from "@mui/material";
 import BaseQuestion from "./BaseQuestion.tsx";
 
 interface DateQuestionProps {
-    namePrefix: string;
+    questionIdPrefix: string;
 }
 
-const DateQuestion = ({ namePrefix }: DateQuestionProps) => {
+const DateQuestion = ({ questionIdPrefix }: DateQuestionProps) => {
     return (
         <Stack spacing={2}>
-            <BaseQuestion namePrefix={namePrefix} />
+            <BaseQuestion questionIdPrefix={questionIdPrefix} />
         </Stack>
     );
 };

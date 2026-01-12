@@ -53,7 +53,7 @@ const EditorWizard = ({ survey }: EditorWizardProps) => {
         // TODO: send survey data to api
     };
 
-    const renderAddButton = (index: number) => (
+    const renderAddButtonAtIndex = (index: number) => (
         <Button
             variant={'outlined'}
             startIcon={<AddIcon />}
@@ -64,33 +64,25 @@ const EditorWizard = ({ survey }: EditorWizardProps) => {
         </Button>
     )
 
-    if (fields.length === 0) {
-        return (
-            <FormProvider {...methods}>
-                <form onSubmit={handleSubmit(handlePublish)}>
-                    <Stack spacing={2}>
-                        {renderAddButton(0)}
-                    </Stack>
-                </form>
-            </FormProvider>
-        )
-    }
+    const isEmpty = fields.length === 0;
 
     return (
         <FormProvider {...methods}>
             <form onSubmit={handleSubmit(handlePublish)}>
                 <Stack spacing={2}>
-                    {fields.map((field, index) => (
-                        <Box key={field.id}>
-                            <QuestionContainer
-                                index={index}
-                                onDelete={() => handleDeleteQuestion(index)}
-                            />
-                            <Stack sx={{ mt: 2 }}>
-                                {renderAddButton(index + 1)}
-                            </Stack>
-                        </Box>
-                    ))}
+                    { isEmpty? (renderAddButtonAtIndex(0)) : (
+                        fields.map((field, currentIndex) => (
+                            <Box key={field.id}>
+                                <QuestionContainer
+                                    index={currentIndex}
+                                    onDelete={() => handleDeleteQuestion(currentIndex)}
+                                />
+                                <Stack sx={{ mt: 2 }}>
+                                    {renderAddButtonAtIndex(currentIndex + 1)}
+                                </Stack>
+                            </Box>
+                        ))
+                    )}
                     <Button
                         type="submit"
                         disabled={!methods.formState.isValid}

@@ -5,7 +5,7 @@ import { z } from "zod";
 import ControlledTextField from "../../common/ControlledTextField.tsx";
 
 interface SliderQuestionProps {
-    namePrefix: string;
+    questionIdPrefix: string;
 }
 
 const sliderSchema = z.object({
@@ -17,24 +17,28 @@ const sliderSchema = z.object({
         path: ["maxValue"],
     });
 
-const SliderQuestion = ({ namePrefix }: SliderQuestionProps) => {
+const SliderQuestion = ({ questionIdPrefix }: SliderQuestionProps) => {
     const { trigger, getValues } = useFormContext();
 
     const validateRange = () => {
         const values = {
-            minValue: getValues(`${namePrefix}.minValue`),
-            maxValue: getValues(`${namePrefix}.maxValue`)
+            minValue: getValues(`${questionIdPrefix}.minValue`),
+            maxValue: getValues(`${questionIdPrefix}.maxValue`)
         };
         const result = sliderSchema.safeParse(values);
-        return result.success || result.error?.issues.find(i => i.path.includes('maxValue'))?.message || true;
+        if (result.success) return true;
+
+        const maxValidationStatus =
+            result.error.issues.find(i => i.path.includes('maxValue'))?.message;
+        return maxValidationStatus ?? false;
     };
 
     return (
         <Stack spacing={2}>
-            <BaseQuestion namePrefix={namePrefix} />
+            <BaseQuestion questionIdPrefix={questionIdPrefix} />
             <Stack direction={'row'} spacing={2}>
                 <ControlledTextField
-                    name={`${namePrefix}.minValue`}
+                    name={`${questionIdPrefix}.minValue`}
                     label="Minimum value"
                     variant="outlined"
                     type="number"
@@ -47,11 +51,11 @@ const SliderQuestion = ({ namePrefix }: SliderQuestionProps) => {
                         }
                     }}
                     onChange={() => {
-                        trigger(`${namePrefix}.maxValue`);
+                        trigger(`${questionIdPrefix}.maxValue`);
                     }}
                 />
                 <ControlledTextField
-                    name={`${namePrefix}.maxValue`}
+                    name={`${questionIdPrefix}.maxValue`}
                     label="Maximum value"
                     variant="outlined"
                     type="number"

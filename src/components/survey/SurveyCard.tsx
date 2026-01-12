@@ -3,6 +3,7 @@ import ContentCopyOutlinedIcon from '@mui/icons-material/ContentCopyOutlined';
 import IconButton from "@mui/material/IconButton";
 import type { SurveyPreview } from "../../types/survey.types.ts";
 import SurveyIcon from "./SurveyIcon.tsx";
+import {toast} from "sonner";
 
 interface SurveyCardProps {
     survey: SurveyPreview;
@@ -11,8 +12,13 @@ interface SurveyCardProps {
 const SurveyActions = ({survey}: SurveyCardProps) => {
 
     const onCopyClick = async () => {
-        const link: string = `${import.meta.env.VITE_WEBSITE_URL}/surveys/${survey.id}`;
-        await navigator.clipboard.writeText(link)
+        try {
+            const link: string = `${import.meta.env.VITE_WEBSITE_URL}/surveys/${survey.id}`;
+            await navigator.clipboard.writeText(link)
+        }
+        catch (error) {
+            toast.error("Could not copy content");
+        }
     }
 
     return (
@@ -30,6 +36,8 @@ const SurveyActions = ({survey}: SurveyCardProps) => {
 }
 
 const SurveyCard = ({ survey }: SurveyCardProps) => {
+
+    survey.createdAt = new Date(survey.createdAt).toLocaleDateString()
     return (
         <Card>
             <Stack direction="column" spacing={2}>
@@ -39,7 +47,7 @@ const SurveyCard = ({ survey }: SurveyCardProps) => {
                         <Stack direction="column">
                             <Typography>{survey.title}</Typography>
                             <Typography variant="caption" color="text.secondary">
-                                {new Date(survey.createdAt).toLocaleDateString()}
+                                {survey.createdAt}
                             </Typography>
                         </Stack>
                     </Stack>

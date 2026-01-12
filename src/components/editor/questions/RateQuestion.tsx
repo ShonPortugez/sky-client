@@ -3,17 +3,17 @@ import BaseQuestion from "./BaseQuestion.tsx";
 import ControlledTextField from "../../common/ControlledTextField.tsx";
 
 interface RateQuestionProps {
-    namePrefix: string;
+    questionIdPrefix: string;
 }
 
-const RateQuestion = ({ namePrefix }: RateQuestionProps) => {
+const RateQuestion = ({ questionIdPrefix }: RateQuestionProps) => {
     return (
         <Stack spacing={2}>
-            <BaseQuestion namePrefix={namePrefix} />
+            <BaseQuestion questionIdPrefix={questionIdPrefix} />
 
             <Stack direction="row" alignItems="center" spacing={2}>
                 <ControlledTextField
-                    name={`${namePrefix}.maxValue`}
+                    name={`${questionIdPrefix}.maxValue`}
                     label="Max Stars"
                     type="number"
                     variant="outlined"

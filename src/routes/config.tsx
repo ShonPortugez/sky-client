@@ -20,7 +20,7 @@ export const APP_ROUTES: RouteConfig[] = [
         path: '/',
         element: <RootLayout />,
         children: [
-            { key: 'SURVEYS', path: ROUTES.SURVEYS, element: <SurveysPage /> },
+            { key: 'surveys', path: ROUTES.SURVEYS, element: <SurveysPage /> },
             { key: 'editor', path: ROUTES.EDITOR, element: <SurveyEditorPage /> },
             { key: 'sign-in', path: ROUTES.SIGN_IN, element: <SignInPage /> },
             { key: 'sign-up', path: ROUTES.SIGN_UP, element: <SignUpPage /> },

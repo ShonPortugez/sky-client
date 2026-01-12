@@ -2,11 +2,11 @@ import { useQuery } from "@tanstack/react-query";
 import { apiRequests } from "../lib/api.ts";
 import type { SurveyPreview } from "../types/survey.types.ts";
 
-const SURVEY_QUERY_KEY = "SURVEYS";
+const surveyQueryKey = "SURVEYS";
 
 export const useSurvey = () => {
     const { data, isLoading, isError, refetch } = useQuery<SurveyPreview[]>({
-        queryKey: [SURVEY_QUERY_KEY],
+        queryKey: [surveyQueryKey],
         queryFn: apiRequests.surveys.getSurveys,
     });
 
@@ -20,7 +20,7 @@ export const useSurvey = () => {
 
 export const useSurveyById = (id: string) => {
     const { data, isLoading, isError } = useQuery<SurveyPreview>({
-        queryKey: [SURVEY_QUERY_KEY, id],
+        queryKey: [surveyQueryKey, id],
         queryFn: () => apiRequests.surveys.getSurvey(id),
         enabled: !!id,
     });
