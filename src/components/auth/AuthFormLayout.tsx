@@ -10,14 +10,14 @@ export interface FieldConfig {
     required?: boolean;
 }
 
-interface GenericFormLayoutProps<T extends Record<string, string>> {
+interface AuthFormLayoutProps<T extends Record<string, string>> {
     title: string;
     fields: readonly FieldConfig[]
     initialValues: T;
     onSubmit: (values: T) => void;
 }
 
-export const GenericFormLayout = <T extends Record<string, string>>(props: GenericFormLayoutProps<T>) => {
+export const AuthFormLayout = <T extends Record<string, string>>(props: AuthFormLayoutProps<T>) => {
     const [values, setValues] = useState<T>(props.initialValues);
     const [isPending] = useState<boolean>(false);
 

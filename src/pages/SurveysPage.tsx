@@ -1,7 +1,7 @@
 import Box from "@mui/material/Box";
 import SurveyList from "../components/survey/SurveyList.tsx";
 import {Stack, Typography} from "@mui/material";
-import CreateSurveyDialogForm from "../components/survey/create/CreateSurveyDialogForm.tsx";
+import CreateSurveyDialogForm from "../components/survey/CreateSurveyDialogForm.tsx";
 
 
 

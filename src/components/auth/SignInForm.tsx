@@ -1,10 +1,10 @@
 import { useForm } from "react-hook-form";
-import { signInSchema, type SignInSchema } from "./auth.schema.ts";
+import { signInSchema, type SignInSchema } from "../../schemas/auth.schema.ts";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { apiRequests } from "../../lib/api.ts";
 import { useNavigate } from "react-router-dom";
-import {GenericFormLayout} from "../common/GenericFormLayout.tsx";
+import {AuthFormLayout} from "./AuthFormLayout.tsx";
 import Box from "@mui/material/Box";
 import {ROUTES} from "../../routes/paths.ts";
 
@@ -43,7 +43,7 @@ const SignInForm = () => {
 
     return (
         <Box sx={{ width: '100%' }}>
-            <GenericFormLayout
+            <AuthFormLayout
                 title={'Sign in'}
                 fields={signInFields}
                 initialValues={{

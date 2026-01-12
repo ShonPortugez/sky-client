@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import {QuestionType} from "../types/question.types.ts";
+import { QuestionType } from "../types/question.types.ts";
 
 const BaseQuestionSchema = z.object({
     id: z.string(),
@@ -45,4 +45,11 @@ export const QuestionSchema = z.discriminatedUnion('type', [
     SliderQuestionSchema,
     CheckboxQuestionSchema,
 ]);
+
+export const createSurveySchema = z.object({
+    title: z.string().min(2, { message: 'Title must be more than 2 characters' }),
+    description: z.string().optional(),
+})
+
+export type CreateSurveySchema = z.infer<typeof createSurveySchema>
 

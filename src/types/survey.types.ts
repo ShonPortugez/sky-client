@@ -3,7 +3,7 @@ import type { BaseQuestionSpec } from "./question.types.ts";
 export interface SurveyPreview {
     id: string;
     title: string;
-    description: string;
+    description?: string;
     userId: string;
     isActive: boolean;
     createdAt: string;
@@ -12,7 +12,7 @@ export interface SurveyPreview {
 
 export interface CreateSurveyData {
     title: string;
-    description: string;
+    description?: string;
     isActive: boolean
 }
 

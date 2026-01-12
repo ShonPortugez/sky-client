@@ -1,12 +1,12 @@
 import Box from "@mui/material/Box";
 import {useForm} from "react-hook-form";
-import { signUpSchema, type SignUpSchema} from "./auth.schema.ts";
+import { signUpSchema, type SignUpSchema} from "../../schemas/auth.schema.ts";
 import { zodResolver } from "@hookform/resolvers/zod"
 import {useNavigate} from "react-router-dom";
 import {apiRequests} from "../../lib/api.ts";
 import {toast} from "sonner";
 import type {UserSignupData} from "../../types/user.types.ts";
-import {GenericFormLayout} from "../common/GenericFormLayout.tsx";
+import {AuthFormLayout} from "./AuthFormLayout.tsx";
 import {ROUTES} from "../../routes/paths.ts";
 
 const SignUpForm = () => {
@@ -46,7 +46,7 @@ const SignUpForm = () => {
 
     return (
         <Box sx={{ width: '100%' }}>
-            <GenericFormLayout
+            <AuthFormLayout
                 title={'Sign in'}
                 fields={signInFields}
                 initialValues={{
