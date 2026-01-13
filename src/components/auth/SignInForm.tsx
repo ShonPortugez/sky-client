@@ -1,11 +1,12 @@
 import { useForm } from "react-hook-form";
-import { signInSchema, type SignInSchema } from "./auth.schema.ts";
+import { signInSchema, type SignInSchema } from "../../schemas/auth.schema.ts";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { apiRequests } from "../../lib/api.ts";
 import { useNavigate } from "react-router-dom";
 import {AuthFormLayout} from "./AuthFormLayout.tsx";
 import Box from "@mui/material/Box";
+import {ROUTES} from "../../routes/paths.ts";
 
 const SignInForm = () => {
     const navigate = useNavigate();
@@ -26,7 +27,7 @@ const SignInForm = () => {
             }
 
             toast.success("Login successful");
-            navigate('/home');
+            navigate(`/${ROUTES.SURVEYS}`);
         } catch (err) {
             const message = err instanceof Error ? err.message : "An unexpected error occurred";
             console.error(err);

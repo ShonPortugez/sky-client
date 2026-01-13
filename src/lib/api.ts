@@ -1,9 +1,10 @@
 import axios from 'axios';
-import type {UserAuthRequest} from "../types/auth.types.ts";
-import type {UserSignupData} from "../types/user.types.ts";
-import {StatusCodes} from "http-status-codes";
+import type { UserAuthRequest } from "../types/auth.types.ts";
+import type { UserSignupData } from "../types/user.types.ts";
+import type { CreateSurveyData } from "../types/survey.types.ts";
+import { StatusCodes } from "http-status-codes";
 
-const apiUrl: string = import.meta.env.API_URL || 'http://localhost:8080';
+const apiUrl: string = import.meta.env.VITE_API_URL || 'http://localhost:8080';
 
 const api = axios.create({
     baseURL: apiUrl,
@@ -13,7 +14,7 @@ const api = axios.create({
 
 export const apiRequests = {
     auth: {
-        async login(authRequest: UserAuthRequest)  {
+        async login(authRequest: UserAuthRequest) {
             const response = await api.post('/auth/login', authRequest);
             return response.status === StatusCodes.OK;
         },
@@ -22,6 +23,20 @@ export const apiRequests = {
         async signup(signupRequest: UserSignupData) {
             const response = await api.post('users/', signupRequest);
             return response.status === StatusCodes.OK;
+        }
+    },
+    surveys: {
+        async getSurveys() {
+            const response = await api.get('/surveys/');
+            return response.data;
+        },
+        async getSurvey(id: string) {
+            const response = await api.get(`/surveys/${id}`);
+            return response.data;
+        },
+        async createNewSurvey(data: CreateSurveyData) {
+            const response = await api.post('/surveys/', data);
+            return response.data;
         }
     }
 };

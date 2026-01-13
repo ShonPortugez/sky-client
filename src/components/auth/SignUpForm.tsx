@@ -1,12 +1,13 @@
 import Box from "@mui/material/Box";
 import {useForm} from "react-hook-form";
-import { signUpSchema, type SignUpSchema} from "./auth.schema.ts";
+import { signUpSchema, type SignUpSchema} from "../../schemas/auth.schema.ts";
 import { zodResolver } from "@hookform/resolvers/zod"
 import {useNavigate} from "react-router-dom";
 import {apiRequests} from "../../lib/api.ts";
 import {toast} from "sonner";
 import type {UserSignupData} from "../../types/user.types.ts";
 import {AuthFormLayout} from "./AuthFormLayout.tsx";
+import {ROUTES} from "../../routes/paths.ts";
 
 const SignUpForm = () => {
 
@@ -28,7 +29,7 @@ const SignUpForm = () => {
             }
 
             toast.success("Signup Successful");
-            navigate('/home');
+            navigate(`/${ROUTES.SURVEYS}`);
         } catch (err) {
             const message = err instanceof Error ? err.message : "An unexpected error occurred";
             console.error(err);
